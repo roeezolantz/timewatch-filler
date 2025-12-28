@@ -224,6 +224,21 @@ class TimeWatch:
                 {'task0': '0', 'taskdescr0': '', 'what0': '1', 'emm0': str(start_minute), 'ehh0': str(start_hour),
                  'xmm0': str(end_minute), 'xhh0': str(end_hour)})
 
+        # Log the row(s) being filled
+        if what_to_punch in (3456, 1234):
+            self.logger.info(
+                f"Filling row {date_str}: [1-2] {self.tuple_to_str(start)} -> {self.tuple_to_str(end)}; "
+                f"[3-4] {self.tuple_to_str(start1)} -> {self.tuple_to_str(end1)}"
+            )
+        elif what_to_punch == 34:
+            self.logger.info(
+                f"Filling row {date_str}: [3-4] {self.tuple_to_str(start)} -> {self.tuple_to_str(end)}"
+            )
+        else:
+            self.logger.info(
+                f"Filling row {date_str}: [1-2] {self.tuple_to_str(start)} -> {self.tuple_to_str(end)}"
+            )
+
         self.session.headers = {
             'Content-Type': r"application/x-www-form-urlencoded; charset=UTF-8",
             'Referer': f"https://c.timewatch.co.il/punch/editwh.php?month="
@@ -234,8 +249,7 @@ class TimeWatch:
         time.sleep(random.randint(0, 10))
 
         if "TimeWatch - Reject" in r.text or "error " in r.text or u"אינך" in r.text:
-            self.logger.info(f'Failure punching in on {date_str} as {self.tuple_to_str(start)}'
-                             'to {self.tuple_to_str(end)}')
+            self.logger.info(f'Failure punching in on {date_str} as {self.tuple_to_str(start)} to {self.tuple_to_str(end)}')
             return False
 
         self.logger.info(
