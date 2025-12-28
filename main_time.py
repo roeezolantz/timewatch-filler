@@ -68,7 +68,17 @@ def some_func(company, username, password):
 
     today = datetime.date.today()
     year = today.year
-    month = today.month - 1
+    
+    # Check if we should fill current month or previous month
+    # TIMEWATCH_FILL_CURRENT_MONTH: "true" = current month, "false" or unset = previous month
+    fill_current_month = os.getenv('TIMEWATCH_FILL_CURRENT_MONTH', 'false').lower() == 'true'
+    
+    if fill_current_month:
+        month = today.month
+        logger.info(f"TIMEWATCH_FILL_CURRENT_MONTH=true: filling current month")
+    else:
+        month = today.month - 1
+        logger.info(f"TIMEWATCH_FILL_CURRENT_MONTH=false: filling previous month")
     
     logger.info(f"Starting timewatch fill for company={company}, user={username}")
     logger.info(f"Today's date: {today}")

@@ -63,6 +63,12 @@ TIMEWATCH_USERS='[
 ]'
 ```
 
+**Month selection:**
+```bash
+# Fill current month (default: false = fill previous month)
+TIMEWATCH_FILL_CURRENT_MONTH=true
+```
+
 ### Using a `.env` file
 
 Create a `.env` file in the project root:
